@@ -1,0 +1,95 @@
+/* Основні стилі для контейнера */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #191a2c;
+  padding: 20px; /* Відступ для покращення вигляду на малих екранах */
+}
+
+/* Контейнер для логотипа */
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 0px; /* Зменшений відступ для оптимізації під 360px ширини */
+}
+
+/* Стилі для тексту "G" та "RA" */
+.logo-g, .logo-ra {
+  font-size: 48px; /* Зменшений розмір для 360px */
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.logo-g {
+  margin-right: -12px; /* Відрегульована відстань */
+}
+
+.logo-ra {
+  margin-left: -5px; /* Відрегульована відстань */
+}
+
+/* Контейнер для накладених зображень */
+.logo-images {
+  position: relative;
+  width: 48px; /* Зменшений розмір */
+  height: 48px;
+}
+
+/* Чоловічий символ */
+.logo-male {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  width: 44px;
+  height: 44px;
+}
+
+/* Жіночий символ */
+.logo-female {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 30px;
+  height: 42px;
+}
+
+/* Стилі для тексту під логотипом */
+.tagline {
+  font-family: 'Gilroy', sans-serif;
+  font-size: 16px; /* Зменшений розмір шрифту */
+  font-weight: 500;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+/* Стилі для кнопки */
+.create-profile-btn {
+  background-color: #ff5b8d;
+  color: #000;
+  padding: 10px 20px;
+  font-family: 'Gilroy', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  border-radius: 34px;
+  cursor: pointer;
+  width: 233px; /* Зменшена ширина для адаптації */
+  height: 55px; /* Зменшена висота */
+  transition: background-color 0.3s ease;
+}
+
+.create-profile-btn:hover {
+  background-color: #e34b79;
+}
+
+.create-profile-btn:active {
+  background-color: #fff;
+  color: #000;
+}

@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5be3d884.css",
+    "main.js": "/static/js/main.57180557.js",
+    "static/media/222.png": "/static/media/222.4794a55de5af9a134c56.png",
+    "static/media/Gilroy-Bold.woff": "/static/media/Gilroy-Bold.0607a1bc636f63251ed8.woff",
+    "static/media/Gilroy-Regular.woff": "/static/media/Gilroy-Regular.ebe86c0337572553acea.woff",
+    "static/media/Gilroy-Bold.woff2": "/static/media/Gilroy-Bold.ef7c40ff1efeaaa4c7c6.woff2",
+    "static/media/Gilroy-Regular.woff2": "/static/media/Gilroy-Regular.f6c9931fabe5a6eb3307.woff2",
+    "index.html": "/index.html",
+    "main.5be3d884.css.map": "/static/css/main.5be3d884.css.map",
+    "main.57180557.js.map": "/static/js/main.57180557.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5be3d884.css",
+    "static/js/main.57180557.js"
+  ]
+}

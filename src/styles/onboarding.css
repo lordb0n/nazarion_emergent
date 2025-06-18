@@ -1,0 +1,610 @@
+/* Основні стилі для контейнера */
+.onboarding-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #191a2c;
+    padding: 20px;
+    text-align: center; /* Вирівнювання тексту та інпутів по центру */
+  }
+  
+  /* Контейнер для логотипа */
+  .logo-container1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    bottom: 15%;
+  }
+  
+  /* Стилі для тексту "G" та "RA" */
+  .logo-g, .logo-ra {
+    font-family: 'Gilroy', sans-serif;
+    font-size: 64px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 77.38px;
+  }
+  
+  /* Контейнер для накладених зображень */
+  .logo-images {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    margin: 10px;
+  }
+  
+  /* Стилі для зображень символів */
+  .logo-male {
+    position: absolute;
+    left: 10px;
+    width: 56px;
+    height: 56px;
+  }
+  
+  .logo-female {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    width: 38px;
+    height: 53px;
+  }
+  
+  /* Заголовок для онбордингу */
+  .onboarding-heading {
+
+    color: #fff;
+    margin-bottom: 10px;
+    font-family: Gilroy, sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 29.02px;
+    text-align: center;
+
+  }
+  
+  /* Підзаголовок */
+  .onboarding-subheading {
+    font-family: 'Gilroy', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  
+  /* Інпут для введення імені */
+  .onboarding-input {
+    width: 95%;
+    height: 35px;
+    padding: 10px;
+    background-color: #282942;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-family: 'Gilroy', sans-serif;
+    font-size: 16px;
+    margin-bottom: 50px;
+    text-align: center; /* Текст всередині інпуту по центру */
+  }
+  
+  /* Стилі для кнопки */
+  .onboarding-btn {
+    background-color: #ff5b8d;
+    color: #000000;
+    padding: 10px 20px;
+    font-family: 'Gilroy', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    width: 233px;
+    height: 55px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px; /* Простір під кнопкою */
+  }
+  
+  .onboarding-btn:hover {
+    background-color: #e34b79;
+  }
+
+  .photo-preview-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .photo-preview {
+    max-width: 90%;
+    max-height: 90%;
+  }
+  
+  .preview-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  
+  /* Прогрес-бар */
+.progress-bar {
+    display: flex;
+    justify-content: space-between; /* Розподіляє елементи рівномірно */
+    position: absolute;
+    bottom: 5px; /* Відступ від нижнього краю */
+    left: 0;
+    right: 0;
+    width: 100%; /* Розтягує на всю ширину */
+    padding: 0 15px; /* Відступ зліва і справа */
+    box-sizing: border-box; /* Забезпечує, що padding враховується в загальній ширині */
+  }
+  
+  /* Кожна кнопка прогрес-бару */
+  .progress-bar-step {
+    flex-grow: 1; /* Розтягує кожен елемент рівномірно */
+    height: 4px;
+    background-color: #3d3d5c;
+    margin: 0 4px; /* Невеликий відступ між елементами */
+    border-radius: 2px;
+  }
+  
+  .progress-bar-step.active {
+    background-color: #ff5b8d;
+  }
+  
+
+  .custom-select-container {
+    position: relative;
+    width: 93%;
+    margin: 0 auto 20px auto; /* Центрує по горизонталі */
+    padding: 12px;
+    margin-bottom: 37px;
+  }
+  
+  .onboarding-select {
+    width: 100%;
+    padding: 10px;
+    background-color: #282942;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Gilroy', sans-serif;
+    font-size: 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-align: center; /* Вирівнювання тексту по центру */
+    position: relative;
+  }
+  
+  .custom-select-header {
+    width: 95%;
+    padding: 20px;
+    background-color: #282942;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-family: 'Gilroy', sans-serif;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    left: -4.3%;
+    margin-top: -10px;
+  }
+  
+  .select-arrow {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-left: 4px solid #ff5b8d;
+    border-bottom: 4px solid #ff5b8d;
+    transform: rotate(315deg);
+    transition: transform 0.3s ease;
+  }
+  
+  .select-arrow.open {
+    transform: rotate(-225deg);
+  }
+  
+  .custom-select-options {
+    position: absolute;
+    width: 100%; /* Встановлюємо ширину списку на 100% */
+    background-color: #282942;
+    border-radius: 4px;
+    margin-top: 0; /* Видаляємо відступ зверху */
+    list-style: none;
+    padding: 0; /* Забираємо зайві внутрішні відступи */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1; /* Забезпечуємо, що список з'являється поверх інших елементів */
+    left: -0.5%;
+  }
+  
+  .custom-select-options li {
+    padding: 12px 20px; /* Відступи зліва і справа */
+    color: #b2b2b2; /* Колір тексту для неактивного варіанту */
+    font-family: 'Gilroy', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: left; /* Вирівнюємо текст по лівому краю */
+    transition: background-color 0.3s ease;
+    width: 100%; /* Ширина елементів на 100% */
+    box-sizing: border-box; /* Включаємо padding і border в ширину */
+    background-color: #2e2e3e; /* Фон для неактивного стану */
+}
+
+.custom-select-options li.selected {
+    background-color: #ff4081; /* Темно-рожевий колір для активного стану */
+    color: #fff; /* Колір тексту для активного стану */
+}
+
+
+
+  .custom-select-options .selected {
+    background-color: #ff5b8d;
+    color: #000;
+  }
+
+  .photo-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #191a2c; /* Додаємо фон */
+    text-align: center;
+  }
+  
+
+  /* Сітка для фотографій */
+
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 стовпці */
+    gap: 10px; /* Проміжок між фото */
+    justify-items: center; /* Вирівнювання фото по центру */
+    margin-bottom: 20px;
+  }
+  
+  .photo-square {
+    width: 160px;
+    height: 160px;
+    background-color: #282942;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .user-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    object-fit: cover;
+  }
+  
+  .add-photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #282942;
+    color: #ff5b8d;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 15px;
+  }
+  
+  .add-photo-placeholder {
+    color: #ff5b8d;
+    text-decoration: underline; /* Додає підкреслення */
+    text-underline-offset: 2px; /* Регулює положення підкреслення */
+  }
+  
+  
+  .remove-photo-btn {
+    background-color: #ff5b8d; /* Рожевий фон */
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: absolute;
+    bottom: 10px; /* або як тобі зручно розмістити кнопку */
+    right: 10px;
+  }
+  
+  .remove-photo-btn:hover {
+    background-color: #e34b79; /* Трохи темніший рожевий для ефекту наведення */
+  }
+  
+  .trash-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+  }
+
+  .subscription-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1A1A2E;
+    border-radius: 20px;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+  }
+  
+  .subscription-body {
+    text-align: center;
+    padding: 20px 0;
+  }
+  
+  .subscription-body h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .subscription-body p {
+    font-size: 14px;
+    color: #B2B2B2;
+    margin-bottom: 20px;
+  }
+  
+  /* Видаляємо загальну рамку та залишаємо лише рамки навколо пунктів */
+  .benefits-list {
+    list-style: none;
+    padding: 15px;
+    margin: 20px 0;
+  }
+  
+  .benefits-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border: 2px solid #FF4081; /* Рамка навколо пунктів підписки */
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0 0 15px rgba(255, 64, 129, 0.8); /* Світлове підсвічування */
+  }
+  
+  .benefits-list li img {
+    margin-right: 10px;
+    width: 24px;
+    height: 24px;
+  }
+  
+  .benefit-title {
+    font-weight: bold;
+    color: #FF4081;
+  }
+  
+  .price-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .price-selection label {
+    font-size: 16px;
+    color: #FF4081;
+    margin-bottom: 10px;
+  }
+  
+  .price-selection select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #FF4081;
+    background-color: #2A2A3E;
+    color: white;
+  }
+  
+  .purchase-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #FF4081;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .purchase-button:hover {
+    background-color: #E73370;
+  }
+  
+  /* Лінії по боках */
+  .side-line {
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 10px;
+    z-index: -1;
+  }
+  
+  .left-line {
+    left: 0;
+  }
+  
+  .right-line {
+    right: 0;
+    transform: scaleX(-1); /* Віддзеркалити лінію праворуч */
+  }
+  
+  /* Стилі для свайпінгу */
+  .subscription-content {
+    width: 100%;
+    overflow-x: scroll;
+  }
+  
+  .subscription-slide {
+    min-width: 100%;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .spoky-container {
+    text-align: center;
+    padding: 5px;
+    background-color: #191a2c;
+    height: auto;
+    overflow-y: auto; /* Прокрутка для великої кількості спокус */
+    padding-bottom: 150px;
+    position: relative; /* Додаємо позиціонування для псевдоелементів */
+  }
+  
+  .spoky-container:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 150px; /* Висота затемнення */
+    background: linear-gradient(to bottom, rgba(25, 26, 44, 0), #191a2c); /* Градієнт від прозорого до кольору фону */
+    pointer-events: none; /* Щоб цей елемент не заважав взаємодії з кнопками чи іншим контентом */
+  }
+  
+
+  .transparent-space {
+    height: 7vh; /* Відступ між логотипом і заголовком, тут використано 7% від висоти вікна браузера */
+    background-color: transparent;
+  }
+
+  .spoky-heading {
+    color: #fff;
+    font-size: 34px;
+    font-family: 'Gilroy', sans-serif;
+    margin-bottom: 20px;
+  }
+  
+  .spoky-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 елементи в ряд */
+    grid-gap: 1px; /* Відступи між елементами */
+    justify-items: center; /* Вирівнюємо всі елементи по центру */
+  }
+  
+  .spoky-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    outline: none; /* Прибирає синю обводку */
+    transition: background-color 0.3s ease;
+    width: 100px; /* Розмір для кожного елемента */
+    margin: 1px 10px; /* Відступ між елементами */
+    outline: none; /* Прибирає синій фокус */
+    border: none;
+  }
+  
+  .spoky-item.selected .spoky-image-container {
+    background-color: #ff4081; /* Колір вибраного кружка */
+  }
+  
+  .spoky-item.selected .spoky-image {
+    filter: brightness(0) ; /* Чорні іконки */
+  }
+  
+  
+  .spoky-image-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #2e2e3e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .spoky-image {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+  }
+  
+  .spoky-title {
+    color: #fff;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  
+  .spoky-description {
+    color: #b2b2b2;
+    font-size: 12px;
+    margin-top: -10px;
+  }
+  
+  .spoky-btn {
+    position: fixed; /* Закріплюємо кнопку */
+    bottom: 10%; /* Відступ від нижнього краю */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2; /* Щоб кнопка була зверху затемнення */
+    width: 233px;
+    height: 55px;
+    padding: 10px 20px;
+    background-color: #ff4081;
+    color: #3d3d5c;
+    font-weight: 700;
+    border: none;
+    border-radius: 34px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .spoky-btn:hover {
+    background-color: #e73370;
+  }
+
+  .overlay {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 300px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    z-index: 1;
+    pointer-events: none; /* Дозволяє кліки на елементи під overlay */
+  }
+  
+  .progress-bar1 {
+    position: fixed; /* Закріплюємо прогрес-бар */
+    bottom: 5px; /* Відступ від нижнього краю, щоб він рухався разом з кнопкою */
+    left: 50%;
+    transform: translateX(-50%); /* Центруємо по горизонталі */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2; /* Щоб прогрес-бар був зверху */
+    width: 100%; /* Розтягує на всю ширину */
+
+  }
+  
+  .progress-bar-step1 {
+    width: 5px;
+    height: 5px;
+    background-color: #1b1b1b;
+    border-radius: 2px;
+    margin: 0 5px;
+    flex-grow: 1; /* Розтягує кожен елемент рівномірно */
+    
+  }
+  
+  .progress-bar-step1.active {
+    background-color: #ff4081; /* Колір для активних кроків */
+  }

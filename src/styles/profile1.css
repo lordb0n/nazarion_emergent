@@ -1,0 +1,107 @@
+/* Container for the profile */
+.profile-container {
+    max-width: 100vw; /* Ensure the container takes full viewport width */
+    margin: 0 auto;
+    color: white;
+    background-color: #191a2b;
+    border-radius: 10px;
+  }
+  
+  /* Header and background */
+  .profile-header {
+    position: relative;
+    text-align: center;
+    width: 100%; /* Ensure the header takes full width */
+  }
+  
+  .profile-background {
+    width: 103%; /* Фіксована ширина контейнера для контенту */
+    margin: 0 auto; /* Центруємо контейнер по горизонталі */
+    position: relative; 
+    background-position: center; 
+    
+  }
+  
+  .header-overlay {
+    position: absolute;
+    top: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    align-items: center;
+  }
+  
+  .token-info {
+    font-size: 14px;
+    color: #ffffff;
+  }
+  
+  .edit-icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  /* Profile image positioning */
+  .profile-image-container {
+    position: absolute;
+    top: 50%; /* Position the profile image in the middle of the background */
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .profile-image {
+    border-radius: 50%;
+    width: 119px;
+    height: 119px;
+    border: 2px solid white;
+  }
+  /* User Info */
+  .user-info h2 {
+    margin-top: 20px;
+    font-size: 20px;
+  }
+  
+  .user-info p {
+    font-size: 14px;
+    color: #cccccc;
+  }
+  
+  /* Bio section */
+  .profile-bio {
+    background-color: #282c3a;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 8px;
+  }
+  
+  textarea {
+    width: 100%;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #fff;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+  
+  /* Dropdown for status */
+  .status-dropdown {
+    margin-top: 10px;
+  }
+  
+  .status-dropdown select {
+    width: 100%;
+    padding: 10px;
+    background-color: #282c3a;
+    border: 1px solid white;
+    color: white;
+    font-size: 16px;
+    border-radius: 8px;
+  }
+  
+  .status-dropdown select option {
+    background-color: #282c3a;
+    color: white;
+  }
+  
