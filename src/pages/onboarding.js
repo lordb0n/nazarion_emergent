@@ -515,7 +515,7 @@ export const SubscriptionPage = () => {
   const navigate = useNavigate();
 
   const handlePurchase = () => {
-    navigate('/next-page'); // Направляє на іншу сторінку після покупки
+    navigate('/profile-main'); // Направляє на іншу сторінку після покупки
   };
 
   return (
