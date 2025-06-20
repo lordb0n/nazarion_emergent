@@ -722,17 +722,6 @@ export const SearchRegistr = () => {
   }, []);
 
     const handleFinishRegistration = async () => {
-      console.log("🔥 Починаю реєстрацію. userData:", userData, "photoFiles:", photoFiles);
-      try {
-        const response = await registerUser(userData, photoFiles);
-        console.log("✅ Відповідь від API:", response);
-        navigate("/profile-main");
-      } catch (error) {
-        console.error("❌ Помилка API:", error);
-        alert("Помилка реєстрації");
-      }
-    };
-
     // Генеруємо тимчасовий telegram_id
     const generateTemporaryId = () => {
       const now = new Date();
