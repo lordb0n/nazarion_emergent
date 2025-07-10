@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/auth';
+const API_BASE = process.env.REACT_APP_API_BASE || '';
+export const API_URL = `${API_BASE}/auth`;
+
 const PROFILE_URL = 'http://localhost:5000/profile';
 
 // 🔹 Функція реєстрації користувача
