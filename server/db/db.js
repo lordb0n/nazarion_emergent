@@ -25,6 +25,7 @@ pool.on('error', err => {
     WHERE schemaname = 'public';
   `);
   console.log('📋 Visible tables:', tables.rows.map(r => r.tablename));
+  console.log('🔌 Connecting to Postgres with:', process.env.DATABASE_URL);
 })();
 
 module.exports = pool;
