@@ -1,23 +1,21 @@
 // server/db/db.js
-// server/db.js
+const path = require('path');
 const { Pool } = require('pg');
 
-const isProd = process.env.NODE_ENV === 'production';
-if (!isProd) {
-  // завантажуємо локальний .env тільки в девелопменті
-  require('dotenv').config({ path: './server/db.env' });
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config({
+    path: path.join(__dirname, 'db.env')
+  });
 }
 
-// Додатковий лог — що є в process.env
 console.log('🌍 ENV VARIABLES:', {
   DATABASE_URL: process.env.DATABASE_URL,
-  NODE_ENV: process.env.NODE_ENV,
-  // додай сюди ще ключі, які очікуєш побачити
+  NODE_ENV:     process.env.NODE_ENV
 });
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
-  console.error('❌ ERROR: DATABASE_URL is not defined! Перевір змінні оточення.');
+  console.error('❌ ERROR: DATABASE_URL is not defined!');
   process.exit(1);
 }
 
@@ -26,7 +24,26 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-pool.on('connect', () => console.log('✅ Connected to Postgres'));
-pool.on('error', err => console.error('⚠️ Postgres pool error:', err));
+// Примусове підключення одразу при старті
+pool.connect()
+  .then(client => {
+    console.log('✅ Connected to Postgres');
+    client.release();
+  })
+  .catch(err => {
+    console.error('❌ Failed to connect to Postgres:', err);
+    process.exit(1);
+  });
+
+// Обробка помилок у пулі
+pool.on('error', err => {
+  console.error('⚠️ Postgres pool error:', err);
+});
+
+process.on('SIGINT', async () => {
+  await pool.end();
+  console.log('🛑 Postgres pool has ended');
+  process.exit(0);
+});
 
 module.exports = pool;
