@@ -3,7 +3,8 @@
 // src/api/likeapi.js
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = process.env.REACT_APP_API_BASE || '';
+
 
 export async function getRecommendations(telegramId) {
   const response = await axios.get(`${BASE_URL}/like/recommendations/${telegramId}`);  return response.data;
