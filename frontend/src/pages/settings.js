@@ -1,87 +1,87 @@
 import React, { useState, useEffect } from 'react';
 import { BazaButton } from './button';
 import { useAuth } from '../AuthContext';
-import axios from 'axios';
+import { getUserProfile, updateUserProfile } from '../api/api';
 import '../styles/settings.css';
 
 const Settings = () => {
   const { telegramId } = useAuth();
   const [userName, setUserName] = useState('');
-  const [userTokens, setUserTokens] = useState(0); // Стан для кількості токенів
+  const [userTokens, setUserTokens] = useState(0);
   const [isEditingName, setIsEditingName] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("Укр");
+  const [selectedLanguage, setSelectedLanguage] = useState("Eng");
+  const [loading, setLoading] = useState(true);
 
-  // Стан для підписок
+  // Subscription state
   const [currentSubscription, setCurrentSubscription] = useState({
-    name: "Безкінечні лайки",
-    price: "5$"
+    name: "Unlimited Likes",
+    price: "$5"
   });
   const [showMoreOptions, setShowMoreOptions] = useState(false);
   const subscriptionOptions = [
-    { id: 1, name: "Безкінечні лайки", price: "10$" },
-    { id: 2, name: "Безкінечні лайки", price: "15$" },
+    { id: 1, name: "Unlimited Likes", price: "$10" },
+    { id: 2, name: "Premium Features", price: "$15" },
+    { id: 3, name: "VIP Access", price: "$25" }
   ];
 
-  // Завантаження поточного імені + токенів з БД
+  // Load current user data
   useEffect(() => {
     if (!telegramId) return;
+    
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/profile/${telegramId}`);
-        if (res.data) {
-          // Зчитуємо ім'я
-          if (res.data.name) {
-            setUserName(res.data.name);
-          }
-          // Зчитуємо токени (якщо вони є)
-          if (typeof res.data.tokens === 'number') {
-            setUserTokens(res.data.tokens);
-          }
+        const profile = await getUserProfile(telegramId);
+        if (profile) {
+          setUserName(profile.name || '');
+          setUserTokens(profile.tokens || 0);
         }
       } catch (err) {
-        console.error('Помилка завантаження профілю:', err);
+        console.error('Error loading profile:', err);
+      } finally {
+        setLoading(false);
       }
     };
+    
     fetchUser();
   }, [telegramId]);
 
-  // Редагування імені
+  // Name editing handlers
   const handleEditName = () => {
     setIsEditingName(true);
   };
 
-// src/pages/settings.js
   const handleSaveName = async () => {
-    // Валідація: мінімум 2 букви
     if (userName.length < 2) {
-      alert("Ім'я повинно містити мінімум 2 букви");
+      alert("Name must contain at least 2 characters");
       return;
     }
+    
     try {
-      // ▶ Зараз ми надсилаємо тільки поле { name: userName }
-      await axios.put(`http://localhost:5000/profile/${telegramId}`, { name: userName });
+      await updateUserProfile(telegramId, { name: userName });
       setIsEditingName(false);
+      alert('Name updated successfully!');
     } catch (err) {
-      console.error('Помилка оновлення імені:', err);
+      console.error('Error updating name:', err);
+      alert('Failed to update name');
     }
   };
-
 
   const handleNameKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleSaveName();
+    } else if (e.key === 'Escape') {
+      setIsEditingName(false);
     }
   };
 
-  // Дозволяємо лише букви
   const handleNameChange = (e) => {
     const value = e.target.value;
-    if (/^[A-Za-zА-Яа-яЁёІіЇїЄє]*$/.test(value)) {
+    if (/^[A-Za-z\s]*$/.test(value)) {
       setUserName(value);
     }
   };
 
-  // Тогл для показу/приховування варіантів підписки
+  // Subscription handlers
   const toggleMoreOptions = () => {
     setShowMoreOptions(!showMoreOptions);
   };
@@ -91,28 +91,31 @@ const Settings = () => {
     setShowMoreOptions(false);
   };
 
+  if (loading) {
+    return (
+      <div className="settings-page">
+        <div className="loading">Loading settings...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="settings-page">
-      {/* Шапка */}
+      {/* Header */}
       <div className="settings-header">
-        <img src="/images/222.png" alt="Header" className="header-image" />
-        <div className="header-overlay">
-          <h1 className="settings-title">Налаштування</h1>
-          {/* Відображаємо реальну кількість токенів */}
-          <div className="token-amount">{userTokens} GORA Token</div>
-        </div>
+        <div className="gora-token">{userTokens} GORA Token</div>
+        <h1 className="settings-title">Settings</h1>
       </div>
 
-      {/* Основний контент */}
       <div className="settings-content">
-        {/* Блок: Загальні */}
+        {/* General Section */}
         <section className="section-block">
-          <h2>Загальні</h2>
+          <h2>General</h2>
           <div className="info-row">
-            <span className="label">Акаунт</span>
+            <span className="label">Account</span>
             <span className="value account-name">
               {isEditingName ? (
-                <>
+                <div className="edit-name-container">
                   <input
                     type="text"
                     className="name-input"
@@ -120,109 +123,110 @@ const Settings = () => {
                     onChange={handleNameChange}
                     onKeyDown={handleNameKeyDown}
                     autoFocus
-                    pattern="^[A-Za-zА-Яа-яЁёІіЇїЄє]{2,}$"
-                    title="Введіть лише букви, мінімум 2 символи"
+                    placeholder="Enter your name"
                   />
                   <button className="save-name-btn" onClick={handleSaveName}>
-                    Зберегти
+                    Save
                   </button>
-                </>
+                  <button className="cancel-name-btn" onClick={() => setIsEditingName(false)}>
+                    Cancel
+                  </button>
+                </div>
               ) : (
-                <>
-                  {userName || 'Без імені'}
-                  <span className="edit-icon" onClick={handleEditName}>
-                    <img src="/images/pencil-pink.png" alt="Редагувати" className="pencil-icon" />
-                  </span>
-                </>
+                <div className="name-display">
+                  <span>{userName || 'No name set'}</span>
+                  <button className="edit-icon" onClick={handleEditName}>
+                    ✏️
+                  </button>
+                </div>
               )}
             </span>
           </div>
 
           <div className="info-row">
-            <span className="label">Мова</span>
+            <span className="label">Language</span>
             <div className="language-options">
-              <button
-                className={`lang-btn ${selectedLanguage === "Укр" ? "active" : ""}`}
-                onClick={() => setSelectedLanguage("Укр")}
-              >
-                Укр
-              </button>
-              <button
-                className={`lang-btn ${selectedLanguage === "Рус" ? "active" : ""}`}
-                onClick={() => setSelectedLanguage("Рус")}
-              >
-                Рус
-              </button>
               <button
                 className={`lang-btn ${selectedLanguage === "Eng" ? "active" : ""}`}
                 onClick={() => setSelectedLanguage("Eng")}
               >
                 Eng
               </button>
+              <button
+                className={`lang-btn ${selectedLanguage === "Ukr" ? "active" : ""}`}
+                onClick={() => setSelectedLanguage("Ukr")}
+              >
+                Укр
+              </button>
+              <button
+                className={`lang-btn ${selectedLanguage === "Rus" ? "active" : ""}`}
+                onClick={() => setSelectedLanguage("Rus")}
+              >
+                Рус
+              </button>
             </div>
           </div>
         </section>
 
-        {/* Блок: Інформація */}
+        {/* Information Section */}
         <section className="section-block">
-          <h2>Інформація</h2>
-          <div className="info-link">Політика конфіденційності</div>
-          <div className="info-link">Правила та умови</div>
-          <div className="info-link">Тех підтримка</div>
+          <h2>Information</h2>
+          <div className="info-link">Privacy Policy</div>
+          <div className="info-link">Terms and Conditions</div>
+          <div className="info-link">Technical Support</div>
         </section>
 
-        {/* Блок: Підписка */}
+        {/* Subscription Section */}
         <section className="section-block">
           <h2 className="subscription-title">
-            Підписка
+            Subscription
             <button className="change-subscription" onClick={toggleMoreOptions}>
-              Змінити
+              Change
             </button>
           </h2>
           <div className="subscription-box">
             <span className="sub-name">{currentSubscription.name}</span>
-            <span className="sub-price">{currentSubscription.price} тиждень</span>
+            <span className="sub-price">{currentSubscription.price} / week</span>
           </div>
           {showMoreOptions && (
             <div className="subscription-options">
               {subscriptionOptions.map(option => (
                 <div
                   key={option.id}
-                  className="subscription-box"
+                  className="subscription-box clickable"
                   onClick={() => handleOptionSelect(option)}
                 >
                   <span className="sub-name">{option.name}</span>
-                  <span className="sub-price">{option.price} тиждень</span>
+                  <span className="sub-price">{option.price} / week</span>
                 </div>
               ))}
             </div>
           )}
         </section>
 
-        {/* Блок: Соц мережі */}
+        {/* Social Networks Section */}
         <section className="section-block">
-          <h2>Соц мережі</h2>
+          <h2>Social Networks</h2>
           <div className="social-icons">
-            <div className="social-circle">
-              <img src="/images/social1.png" alt="Social 1" className="social-icon" />
-            </div>
-            <div className="social-circle">
-              <img src="/images/social2.png" alt="Social 2" className="social-icon" />
-            </div>
-            <div className="social-circle">
-              <img src="/images/social3.png" alt="Social 3" className="social-icon" />
-            </div>
-            <div className="social-circle">
-              <img src="/images/social4.png" alt="Social 4" className="social-icon" />
-            </div>
-            <div className="social-circle">
-              <img src="/images/social5.png" alt="Social 5" className="social-icon" />
-            </div>
+            <a href="#" className="social-circle">
+              <span className="social-icon">📷</span>
+            </a>
+            <a href="#" className="social-circle">
+              <span className="social-icon">📱</span>
+            </a>
+            <a href="#" className="social-circle">
+              <span className="social-icon">🎵</span>
+            </a>
+            <a href="#" className="social-circle">
+              <span className="social-icon">🐦</span>
+            </a>
+            <a href="#" className="social-circle">
+              <span className="social-icon">💬</span>
+            </a>
           </div>
         </section>
       </div>
 
-      {/* Нижня панель навігації */}
       <BazaButton />
     </div>
   );

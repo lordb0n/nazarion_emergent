@@ -1,341 +1,206 @@
 .search-container {
-  align-items: center;
-}
-
-/* Шапка з токенами та локацією */
-.token-up {
   display: flex;
-  justify-content: space-between; /* Іконка зліва, текст справа */
-  align-items: center;
-  background-image: url('/public/images/222.png'); /* Додаємо фон, перевірте шлях */
-  background-size: cover;
-  background-position: center;
-  padding: 10px;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+  color: white;
+  position: relative;
+  overflow: hidden;
 }
 
-.location-button {
-  background-color: transparent;
-  border: none;
-  width: 100%;
+.gora-header {
+  background: linear-gradient(45deg, #e91e63, #f06292);
+  padding: 15px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.gora-token {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.photo-progress-bar {
+  display: flex;
+  gap: 4px;
+  padding: 10px 20px;
+  justify-content: center;
+}
+
+.progress-step {
+  height: 4px;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}
+
+.progress-step.active {
+  background: #e91e63;
+}
+
+.loading-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-text {
+  font-size: 18px;
+  color: #ccc;
+}
+
+.image-container {
+  position: relative;
+  flex: 1;
+  margin: 0 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #333;
+}
+
+.photo-nav-left,
+.photo-nav-right {
+  position: absolute;
+  top: 0;
+  width: 50%;
   height: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  z-index: 10;
   cursor: pointer;
 }
 
-.location-icon {
-  background-color: #2e2e3e;
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.3s ease;
+.photo-nav-left {
+  left: 0;
 }
 
-.location-icon img {
-  width: 22px;
-  height: 22px;
-  filter: grayscale(100%);
+.photo-nav-right {
+  right: 0;
 }
 
-.location-text {
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: right;
-  padding-right: 10px;
-}
-
-/* Прогрес-бар для фото */
-.photo-progres-barom {
-  display: flex;
-  justify-content: space-between;
-  position: absolute;
-  top: 9%;
-  width: 100%;
-  box-sizing: border-box;
-  z-index: 1003;
-}
-
-.progress-bar-step {
-  flex-grow: 1;
-  height: 4px;
-  background-color: #3d3d5c;
-  margin: 0 4px;
-  border-radius: 2px;
-}
-
-.progress-bar-step.active {
-  background-color: #FF4385;
-}
-
-/* Основний блок фото з кандидатами */
-.image-container-profile {
-  position: relative;  /* Для абсолютного позиціонування тексту */
-  width: 100%;
-  height: 60vh;        /* Налаштуйте за потребою */
-  max-height: 600px;   /* Максимальна висота */
-  overflow: hidden;    /* Приховуємо зайві частини зображення */
-  padding: 0;
-  display: flex;
-  justify-content: center;
-}
-
-/* Фото всередині контейнера */
-.image-container-profile img {
+.profile-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;   /* Пропорційно заповнює контейнер */
-  object-position: center;
-  display: block;
+  object-fit: cover;
 }
 
-/* Блок з інформацією про профіль (накладаємо поверх фото) */
+.no-photo {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #444;
+  color: #999;
+  font-size: 18px;
+}
+
 .profile-info {
-  position: absolute;
-  bottom: 0;       /* Прикріплено до нижнього краю контейнера */
-  left: 0;
-  right: 0;
-  max-height: 40%; /* Обмежуємо висоту під опис */
-  overflow-y: auto;/* Прокрутка, якщо текст дуже довгий */
-  color: #fff;
-  text-align: center;
-  padding: 10px 20px;
-  z-index: 2;      /* Щоб текст був вище псевдоелемента та фото */
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  margin: 0 20px;
+  border-radius: 0 0 20px 20px;
+  backdrop-filter: blur(10px);
 }
 
-/* Градієнтний фон через псевдоелемент */
-.profile-info::before {
-  content: "";
-  position: absolute;
-  inset: 0;        /* top:0, right:0, bottom:0, left:0 */
-  z-index: -1;     /* Позаду тексту */
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.7) 0%,   /* Унизу більш темно */
-    rgba(0, 0, 0, 0) 103%    /* Вгорі прозоро */
-  );
-}
-
-/* Назва, деталі, опис (всередині .profile-info) */
 .profile-name {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
-  margin: 10px 0 5px;
+  margin: 0 0 8px 0;
 }
 
 .profile-details {
-  color: #a0a0a0;
-  font-size: 15px;
-  margin-bottom: 8px;
+  color: #ccc;
+  margin: 0 0 12px 0;
+  font-size: 16px;
 }
 
 .profile-description {
-  color: #ffffff;
-  font-size: 15px;
-  line-height: 1.3;
-  margin-bottom: 17vh
-  /* Якщо хочете додаткові відступи, додавайте тут */
-}
-
-/* Нижня панель навігації */
-.middle-nav {
-  display: flex;
-  position: absolute;
-  bottom: 10%;
-  justify-content: space-around;
-  align-items: center;
-  gap: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1001;
-}
-
-/* Стилі для кнопок нижньої навігації */
-.round-btn, .round-btn0 {
-  position: relative;
-  border: none;
-  background-color: #2e2e3e;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.round-btn1, .round-btn2 {
-  position: relative;
-  border: none;
-  background-color: #2e2e3e;
-  border-radius: 50%;
-  width: 65px;
-  height: 65px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.round-btn.inactive,
-.round-btn1.inactive,
-.round-btn0.inactive {
-  background-color: #3e3e4e;
-  box-shadow: 0 8px 15px rgba(62, 62, 78, 0.4);
-  filter: grayscale(70%);
-}
-
-.round-btn.inactive img,
-.round-btn1.inactive img,
-.round-btn0.inactive img {
-  filter: grayscale(70%);
-}
-
-.round-btn img {
-  width: 26px;
-  height: 26px;
-  filter: grayscale(100%);
-  transition: all 0.3s ease;
-}
-
-.round-btn1 img {
-  width: 34px;
-  height: 34px;
-  filter: grayscale(100%);
-  transition: all 0.3s ease;
-}
-
-.round-btn0 img {
-  width: 17px;
-  height: 24px;
-  filter: grayscale(100%);
-  transition: all 0.3s ease;
-}
-
-.round-btn2 img {
-  width: 34px;
-  height: 29.3px;
-  filter: grayscale(100%);
-  transition: all 0.3s ease;
-}
-
-.round-btn.active,
-.round-btn0.active,
-.round-btn1.active,
-.round-btn2.active {
-  background-color: #FF4385;
-  box-shadow: 0 8px 15px rgba(240, 98, 146, 0.4);
-}
-
-/* Стилі для модальних вікон */
-.modal-overlay {
-  position: fixed;
-  top: 6.9%;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #1A1A2E;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1004;
-}
-
-.modal-content {
-  padding: 0;
-  width: 100%;
-  height: 50vh;
-  z-index: 1001;
-  text-align: center;
-}
-
-.modal-image {
-  width: 70%;
-  height: auto;
-  margin-bottom: 15px;
-  align-items: center;
-}
-
-h2 {
-  color: white;
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-p {
-  color: white;
-  font-size: 15px;
-  margin-bottom: 20px;
-  opacity: 83%;
-}
-
-.modal-button {
-  background-color: #ff5681;
-  border: none;
-  color: #000;
-  padding: 23px 75px;
-  font-size: 16px;
-  font-weight: 750;
-  border-radius: 34px;
-  cursor: pointer;
-}
-
-.modal-button:hover {
-  background-color: #ff6f95;
-}
-
-/* Стилі для другого модального вікна */
-.second-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  z-index: 1011;
-}
-
-.second-modal-content {
-  background-color: #191A2C;
-  border-radius: 10px 10px 0 0;
-  width: 100%;
-  max-width: 400px;
+  color: #eee;
+  line-height: 1.4;
   margin: 0;
-  z-index: 1011;
 }
 
-.distance-header {
-  font-size: 20px;
-  color: white;
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: bold;
-  margin-top: 10px;
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 20px;
+  margin-bottom: 80px;
 }
 
-.distance-option {
-  background-color: #282c3a;
-  color: white;
-  font-size: 18px;
-  padding: 25px;
-  margin-bottom: 15px;
+.action-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  margin: 0 auto;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.distance-option:hover {
-  background-color: #3a3f50;
+.action-btn:hover {
+  transform: scale(1.1);
+}
+
+.refresh-btn {
+  background: #666;
+}
+
+.dislike-btn {
+  background: #f44336;
+}
+
+.superlike-btn {
+  background: #2196f3;
+}
+
+.like-btn {
+  background: #4caf50;
+}
+
+.action-btn img {
+  width: 30px;
+  height: 30px;
+  filter: brightness(0) invert(1);
+}
+
+.no-candidates {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.no-candidates h2 {
+  margin: 0 0 16px 0;
+  font-size: 24px;
+}
+
+.no-candidates p {
+  color: #ccc;
+  margin: 0 0 24px 0;
+}
+
+.refresh-button {
+  background: #e91e63;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.refresh-button:hover {
+  background: #c2185b;
 }
