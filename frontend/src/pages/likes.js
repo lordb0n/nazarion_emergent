@@ -1,74 +1,94 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/likes.css';
+import { useAuth } from '../AuthContext';
 import { BazaButton } from './button';
-import { useAuth }   from '../AuthContext';
-import { getLikeYou } from '../api/likeyouapi';
 import { useNavigate } from 'react-router-dom';
+import { getReceivedLikes } from '../api/api';
+import '../styles/likes.css';
 
 const LikesPage = () => {
   const { telegramId } = useAuth();
-  const [likers, setLikers]   = useState([]);
+  const [likes, setLikes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!telegramId) return;
-    setLoading(true);
-    getLikeYou(telegramId)
-      .then(list => {
-        const unique = Array.from(
-          new Map(list.map(u => [u.userId, u])).values()
-        );
-        setLikers(unique);
-      })
-      .catch(e => {
-        console.error(e);
-        setError('Не вдалося завантажити список.');
-      })
-      .finally(() => setLoading(false));
+    if (!telegramId) {
+      setError('Please log in through Telegram first.');
+      setLoading(false);
+      return;
+    }
+
+    const loadLikes = async () => {
+      try {
+        const data = await getReceivedLikes(telegramId);
+        setLikes(data.likes || []);
+      } catch (err) {
+        setError(`Failed to load likes: ${err.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadLikes();
   }, [telegramId]);
 
-  if (loading) return <p>Завантаження…</p>;
-  if (error)   return <p>{error}</p>;
+  const handleProfileClick = (userId) => {
+    navigate(`/likes/${userId}`);
+  };
 
   return (
-    <div className="likes-page-container">
-      <div className="settings-header">
-        <img src="/images/222.png" alt="Header" className="header-image" />
-        <div className="header-overlay">
-          <h1 className="settings-title">Хто лайкнув</h1>
-          <div className="token-amount">50,000 GORA Token</div>
-        </div>
+    <div className="likes-page">
+      {/* GORA Token Header */}
+      <div className="gora-header">
+        <span className="gora-token">50,000 GORA Token</span>
       </div>
 
-      <div className="likes-list">
-        {likers.length === 0
-          ? <p>Ніхто вас ще не лайкнув.</p>
-          : likers.map(user => (
-              <div
-                key={user.userId}
-                className="like-card"
-                onClick={() => navigate(`/likes/${user.userid}`)}
-              >
-                <div className="avatar-circle">
-                  {user.profile_photo?.[0]
-                    ? <img src={user.profile_photo[0]} alt={user.name} />
-                    : (user.name?.charAt(0).toUpperCase() || '?')}
-                </div>
-                <div className="like-info">
-                  <h3>{user.name || 'Анонім'}</h3>
-                  <p className="like-meta">
-                    {user.age ?? '—'} років | {user.orientation || '—'} | {user.distance ? `${user.distance} км` : ''}
-                  </p>
-                  <p className="like-message">{user.bio || ''}</p>
-                </div>
-              </div>
-            ))
-        }
+      <div className="likes-header">
+        <h1 className="likes-title">Who Liked You</h1>
       </div>
 
-      <BazaButton/>
+      <div className="likes-content">
+        {loading && <p className="loading-text">Loading likes...</p>}
+        {error && <p className="error-text">{error}</p>}
+        {!loading && !error && likes.length === 0 && (
+          <div className="no-likes">
+            <p>No one has liked you yet.</p>
+            <p>Keep swiping to find matches!</p>
+          </div>
+        )}
+        {!loading && !error && likes.map(user => (
+          <div
+            key={user.user_id}
+            className="like-item"
+            onClick={() => handleProfileClick(user.user_id)}
+          >
+            <div className="like-avatar">
+              {user.profile_photos && user.profile_photos.length > 0 ? (
+                <img 
+                  src={`${process.env.REACT_APP_BACKEND_URL}${user.profile_photos[0]}`}
+                  alt="Profile" 
+                  className="like-avatar-img"
+                />
+              ) : (
+                <div className="like-avatar-placeholder">
+                  {(user.name || 'A').charAt(0).toUpperCase()}
+                </div>
+              )}
+            </div>
+            <div className="like-info">
+              <h3 className="like-name">{user.name || 'Anonymous'}</h3>
+              <p className="like-details">{user.age} years old</p>
+              <p className="like-bio">{user.bio || 'No description available'}</p>
+            </div>
+            <div className="like-actions">
+              <span className="view-profile">View Profile →</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <BazaButton />
     </div>
   );
 };

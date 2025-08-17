@@ -1,135 +1,111 @@
-// src/pages/search.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { BazaButton } from './button';
 import { useNavigate } from 'react-router-dom';
 import '../styles/search.css';
-import { getRecommendations, sendSwipe } from '../api/likeapi';
+import { searchUsers, sendLike } from '../api/api';
 import { useAuth } from '../AuthContext';
 
 const SearchMain = () => {
   const navigate = useNavigate();
   const { telegramId } = useAuth();
 
-  // Локальний state (масив кандидатів і поточний індекс)
+  // Local state for candidates and current index
   const [candidates, setCandidates] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [photoIndex, setPhotoIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 1) Функція, яка намагається завантажити кандидата(ів) із sessionStorage
-  const loadFromSession = useCallback(() => {
-    try {
-      const stored = sessionStorage.getItem('searchCandidates');
-      const storedIndex = sessionStorage.getItem('searchCurrentIndex');
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        setCandidates(parsed);
-        if (storedIndex !== null) {
-          setCurrentIndex(parseInt(storedIndex, 10));
-        }
-        return true; // дані взято з кешу, новий fetch не потрібен
-      }
-    } catch (e) {
-      console.warn('Якщо sessionStorage не читається:', e);
-    }
-    return false;
-  }, []);
-
-  // 2) Функція, що робить запит на бекенд і відразу зберігає в sessionStorage
-  const fetchRecommendationsAndSave = useCallback(async () => {
+  // Load recommendations from API
+  const fetchRecommendations = useCallback(async () => {
     if (!telegramId) return;
     setIsLoading(true);
     try {
-      const data = await getRecommendations(telegramId);
-      if (Array.isArray(data)) {
-        setCandidates(data);
+      const data = await searchUsers(telegramId, 0, 10);
+      if (data.users && Array.isArray(data.users)) {
+        setCandidates(data.users);
         setCurrentIndex(0);
         setPhotoIndex(0);
-        // Зберігаємо масив і індекс у sessionStorage
-        sessionStorage.setItem('searchCandidates', JSON.stringify(data));
-        sessionStorage.setItem('searchCurrentIndex', '0');
       } else {
         setCandidates([]);
-        sessionStorage.removeItem('searchCandidates');
-        sessionStorage.removeItem('searchCurrentIndex');
       }
     } catch (error) {
-      console.error('Помилка getRecommendations:', error);
+      console.error('Error fetching recommendations:', error);
+      setCandidates([]);
     } finally {
       setIsLoading(false);
     }
   }, [telegramId]);
 
-  // 3) useEffect
-  // При першому рендері (або коли змінюється telegramId) спочатку намагаємось завантажити з кешу,
-  // якщо кеша немає — робимо fetchRecommendationsAndSave().
+  // Load recommendations on component mount
   useEffect(() => {
-    if (!telegramId) return;
-    const fromCache = loadFromSession();
-    if (!fromCache) {
-      fetchRecommendationsAndSave();
+    if (telegramId) {
+      fetchRecommendations();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [telegramId]);
+  }, [telegramId, fetchRecommendations]);
 
-  // 4) Обробка свайпу (лайк/дізлайк/суперлайк)
+  // Handle swipe actions (like/dislike/super_like)
   const handleSwipe = async (action) => {
     const user = candidates[currentIndex];
     if (!user) return;
 
     try {
-      await sendSwipe(telegramId, user.telegram_id, action);
+      const response = await sendLike(telegramId, user.user_id, action);
+      
+      if (response.is_match) {
+        alert('🎉 It\'s a match! You can now chat with this person.');
+      }
 
       const nextIndex = currentIndex + 1;
       if (nextIndex >= candidates.length) {
-        // Якщо більше немає кандидатів — очищаємо кеш і підвантажуємо новий набір
-        sessionStorage.removeItem('searchCandidates');
-        sessionStorage.removeItem('searchCurrentIndex');
-        await fetchRecommendationsAndSave();
+        // If no more candidates, fetch new ones
+        await fetchRecommendations();
       } else {
-        // Інакше просто переходимо до наступного і зберігаємо новий індекс у кеш
+        // Move to next candidate
         setCurrentIndex(nextIndex);
         setPhotoIndex(0);
-        sessionStorage.setItem('searchCurrentIndex', nextIndex.toString());
       }
     } catch (err) {
-      console.error('Помилка при відправленні свайпу:', err);
+      console.error('Error sending swipe:', err);
     }
   };
 
   const handleDislike = () => handleSwipe('dislike');
   const handleLike = () => handleSwipe('like');
-  const handleSuperLike = () => handleSwipe('superlike');
+  const handleSuperLike = () => handleSwipe('super_like');
 
-  // 5) Якщо потрібно зробити ручне оновлення списку
-  const handleRefresh = async () => {
-    sessionStorage.removeItem('searchCandidates');
-    sessionStorage.removeItem('searchCurrentIndex');
-    await fetchRecommendationsAndSave();
+  // Manual refresh
+  const handleRefresh = () => {
+    fetchRecommendations();
   };
 
-  // 6) Логіка перемикання фото
+  // Photo navigation
   const handleNextPhoto = () => {
     const user = candidates[currentIndex];
-    if (!user?.profile_photo?.length) return;
-    const photos = user.profile_photo;
+    if (!user?.profile_photos?.length) return;
+    const photos = user.profile_photos;
     setPhotoIndex(prev => (prev + 1) % photos.length);
   };
+
   const handlePrevPhoto = () => {
     const user = candidates[currentIndex];
-    if (!user?.profile_photo?.length) return;
-    const photos = user.profile_photo;
+    if (!user?.profile_photos?.length) return;
+    const photos = user.profile_photos;
     setPhotoIndex(prev => (prev - 1 + photos.length) % photos.length);
   };
 
-  // Поточний кандидат і фото
+  // Current user and photos
   const currentUser = candidates[currentIndex];
-  const photos = Array.isArray(currentUser?.profile_photo) ? currentUser.profile_photo : [];
+  const photos = Array.isArray(currentUser?.profile_photos) ? currentUser.profile_photos : [];
   const photosCount = photos.length;
 
   return (
     <div className="search-container">
-      {/** Інші елементи UI (шапка, панелі, тощо) */}
+      {/* GORA Token Header */}
+      <div className="gora-header">
+        <span className="gora-token">50,000 GORA Token</span>
+      </div>
+
+      {/* Photo progress bar */}
       <div className="photo-progress-bar">
         {photosCount > 0 && photos.map((_, idx) => (
           <div
@@ -139,86 +115,72 @@ const SearchMain = () => {
         ))}
       </div>
 
+      {/* Main content */}
       {isLoading ? (
-        <div className="loading-text">Завантаження...</div>
+        <div className="loading-container">
+          <div className="loading-text">Loading...</div>
+        </div>
       ) : currentUser ? (
         <>
-          <div className="image-container" style={{ position: 'relative' }}>
+          <div className="image-container">
+            {/* Navigation areas for photo switching */}
             <div
-              style={{
-                position: 'absolute',
-                top: 0, left: 0,
-                width: '50%', height: '100%',
-                cursor: 'pointer', zIndex: 2
-              }}
+              className="photo-nav-left"
               onClick={handlePrevPhoto}
             />
             <div
-              style={{
-                position: 'absolute',
-                top: 0, right: 0,
-                width: '50%', height: '100%',
-                cursor: 'pointer', zIndex: 2
-              }}
+              className="photo-nav-right"
               onClick={handleNextPhoto}
             />
+            
             {photosCount > 0 ? (
               <img
-                src={photos[photoIndex]}
+                src={`${process.env.REACT_APP_BACKEND_URL}${photos[photoIndex]}`}
                 alt="Profile"
-                style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
+                className="profile-image"
               />
             ) : (
-              <div
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  backgroundColor: '#2e2e3e',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#fff'
-                }}
-              >
-                Нема фотографії
+              <div className="no-photo">
+                No Photo Available
               </div>
             )}
           </div>
 
           <div className="profile-info">
-            <h2 className="profile-name">{currentUser.name || 'Анонім'}</h2>
+            <h2 className="profile-name">{currentUser.name || 'Anonymous'}</h2>
             <p className="profile-details">
-              {currentUser.age} років | {currentUser.orientation} | {currentUser.distance || '–'} км
+              {currentUser.age} years old
             </p>
-            <p className="profile-description" style={{ whiteSpace: 'normal' }}>
-              {currentUser.bio || 'Тут можна додати опис...'}
+            <p className="profile-description">
+              {currentUser.bio || 'No description available...'}
             </p>
+          </div>
+
+          {/* Action buttons */}
+          <div className="action-buttons">
+            <button className="action-btn refresh-btn" onClick={handleRefresh}>
+              <img src="/images/refresh.png" alt="Refresh" />
+            </button>
+            <button className="action-btn dislike-btn" onClick={handleDislike}>
+              <img src="/images/dislike.png" alt="Dislike" />
+            </button>
+            <button className="action-btn superlike-btn" onClick={handleSuperLike}>
+              <img src="/images/superlike.png" alt="Super Like" />
+            </button>
+            <button className="action-btn like-btn" onClick={handleLike}>
+              <img src="/images/like.png" alt="Like" />
+            </button>
           </div>
         </>
       ) : (
-        <div className="no-more-candidates">
-          <h2>Нема більше профілів</h2>
-          <button onClick={handleRefresh}>Оновити</button>
+        <div className="no-candidates">
+          <h2>No more profiles</h2>
+          <p>Check back later for new people to meet!</p>
+          <button className="refresh-button" onClick={handleRefresh}>
+            Refresh
+          </button>
         </div>
       )}
-
-      <div className="middle-nav">
-        <button className="round-btn" onClick={handleRefresh}>
-          <img src="/images/search-1.png" alt="Refresh" />
-        </button>
-        <button className="round-btn1" onClick={handleDislike}>
-          <img src="/images/search-2.png" alt="Dislike" />
-        </button>
-        <button className="round-btn" onClick={handleLike}>
-          <img src="/images/search-3.png" alt="Like" />
-        </button>
-        <button className="round-btn2" onClick={handleSuperLike}>
-          <img src="/images/search-4.png" alt="SuperLike" />
-        </button>
-        <button className="round-btn0" onClick={() => { /* Flash logic */ }}>
-          <img src="/images/search-5.png" alt="Flash" />
-        </button>
-      </div>
 
       <BazaButton />
     </div>
