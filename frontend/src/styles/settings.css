@@ -1,0 +1,236 @@
+/* Загальний контейнер сторінки */
+.settings-page {
+  background: #1A1A2E;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Шапка з фото 222.png */
+.settings-header {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+}
+.pencil-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+.subscription-box {
+  border: 1px solid #ff5681;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.header-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.header-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 20px;
+}
+
+.settings-title {
+  position: absolute;      /* Абсолютне позиціонування всередині .header-overlay */
+  bottom: 30%;           /* Відступ знизу */
+  left: 20px;             /* Відступ ліворуч */
+  color: #fff;
+  font-size: 32px;
+  margin: 0;
+  font-weight: bold;
+}
+
+
+.token-amount {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0; /* Приберіть зайві відступи, якщо були */
+}
+
+/* Контейнер контенту */
+.settings-content {
+  background-color: #1A1A2E;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  margin-top: -20px;
+  padding: 20px;
+  color: #fff;
+  flex-grow: 1;
+}
+
+/* Секції */
+.section-block {
+  margin-bottom: 20px;
+}
+.section-block h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+/* Рядки */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.label {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* Блок акаунту */
+.account-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.account-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #2e2e3e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+.account-name {
+  font-size: 16px;
+}
+.edit-icon {
+  margin-left: 5px;
+  font-size: 14px;
+  color: #ff5681;
+  cursor: pointer;
+}
+
+/* Поле вводу і кнопка збереження */
+.name-input {
+  width: 100px;
+  font-size: 16px;
+  padding: 4px;
+  margin-right: 5px;
+}
+.save-name-btn {
+  background-color: #ff5681;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* Мова */
+.language-options {
+  display: flex;
+  gap: 7px;
+}
+.lang-btn {
+  background-color: #2e2e3e;
+  border: none;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-right: 5px;
+}
+
+.lang-btn.active {
+  background-color: #ff5681;
+  color: #fff;
+}
+
+/* Інформація */
+.info-link {
+  font-size: 16px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  text-decoration: underline; /* постійне підкреслення */
+
+}
+.info-link:hover {
+  text-decoration: underline;
+}
+
+/* Підписка */
+.subscription-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.change-subscription {
+  background: none;
+  border: none;
+  color: #ff5681;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.subscription-box {
+  border: 1px solid #ff5681;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.sub-name {
+  font-size: 14px;
+  color: #fff;
+}
+.sub-price {
+  font-size: 14px;
+  color: #ff5681;
+  font-weight: bold;
+}
+
+.social-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.social-circle {
+  width: 45px;
+  height: 45px;
+  background-color: #2e2e3e;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.social-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}

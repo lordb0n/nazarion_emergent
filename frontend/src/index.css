@@ -1,0 +1,47 @@
+/*/ */
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/public/fonts/Gilroy-Regular.woff2') format('woff2'),
+       url('/public/fonts/Gilroy-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/public/fonts/Gilroy-Bold.woff2') format('woff2'),
+       url('/public/fonts/Gilroy-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Gilroy', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 
+              'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 
+              'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #1A1A2E;
+  outline: none !important;
+  html, body {
+    overflow-x: hidden !important;
+    touch-action: pan-y;            /* блокує горизонтальні свайпи */
+    overscroll-behavior-x: none;    /* без “ефекту відскоку” по горизонталі */
+  }
+  
+
+}
+
+.scroll-enabled {
+  overflow: auto; /* Дозволяємо прокрутку, якщо є клас scroll-enabled */
+  
+}
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
