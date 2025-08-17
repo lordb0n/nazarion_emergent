@@ -1,21 +1,26 @@
+[providers.python]
+version = "3.9"
+
+[providers.nodejs]
+version = "18"
 
 [phases.setup]
-nixPkgs = ['nodejs-18_x', 'python39']
+nixPkgs = ['python39', 'python39Packages.pip', 'nodejs-18_x', 'npm-9_x']
 
 [phases.install]
 cmds = [
-    'cd backend && pip install -r requirements.txt'
+    'python --version',
+    'pip --version',
+    'cd backend && pip install -r requirements.txt',
+    'cd frontend && npm install'
 ]
 
 [phases.build]
 cmds = [
-    'echo "Building React frontend..."',
-    'cd frontend && npm install',
     'cd frontend && npm run build',
     'mkdir -p backend/static',
-    'cp -r frontend/build/* backend/static/ || echo "No build files found"'
+    'cp -r frontend/build/* backend/static/ 2>/dev/null || echo "No build files to copy"'
 ]
 
 [start]
 cmd = 'cd backend && python -m uvicorn server:app --host 0.0.0.0 --port $PORT'
-
