@@ -1,4 +1,4 @@
-toml
+
 [phases.setup]
 nixPkgs = ['nodejs-18_x', 'python39']
 
