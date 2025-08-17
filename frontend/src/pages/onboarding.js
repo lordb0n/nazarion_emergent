@@ -13,7 +13,7 @@ export const Onboarding = () => {
   const navigate = useNavigate();               
 
   const isValidName = (name) => {
-    const nameRegex = /^[A-Za-zА-Яа-яЁёІіЇїЄє']{2,}$/;
+    const nameRegex = /^[A-Za-zА-Яа-яЁёІіЇїЄє'\s]{2,}$/;
     return nameRegex.test(name.trim());
   };
 
