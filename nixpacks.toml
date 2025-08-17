@@ -1,0 +1,21 @@
+```toml
+[phases.setup]
+nixPkgs = ['nodejs-18_x', 'python39']
+
+[phases.install]
+cmds = [
+    'cd backend && pip install -r requirements.txt'
+]
+
+[phases.build]
+cmds = [
+    'echo "Building React frontend..."',
+    'cd frontend && npm install',
+    'cd frontend && npm run build',
+    'mkdir -p backend/static',
+    'cp -r frontend/build/* backend/static/ || echo "No build files found"'
+]
+
+[start]
+cmd = 'cd backend && python -m uvicorn server:app --host 0.0.0.0 --port $PORT'
+```
